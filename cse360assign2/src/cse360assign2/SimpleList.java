@@ -4,7 +4,7 @@ import java.math.*;
  * 
  * NAME: JOSHEP NGUYEN
  * CLASS ID: 170
- * Assignment 1
+ * Assignment 2
  * This file contains the class for the Simple List and its methods
  */
 
@@ -52,6 +52,28 @@ public class SimpleList {
             count++;
         }
     }
+    /**
+     * appends an integer to the end of the list. if list is full 
+     * increase size
+     * @param number is the int to be added to the list
+     */
+    public void append(int number) {
+        if(count == size){          //if list is full increase size
+        	int copy[];
+        	copy = list;
+        	size = (int) Math.floor(size * 1.5);
+            list = new int[size];  //incrase size of array
+            for(int index = 0; index < count-1; index++) {
+            	list[index] = copy[index];
+            }
+            list[count] = number;
+            count++;
+        }else{					//add integer to end of list
+            list[count] = number;
+            count++;
+        }
+    }
+    
     /**
      * Remove target integer from the list; if more than 25% of array is empty,
      * size of array is decreased
@@ -124,7 +146,28 @@ public class SimpleList {
         }
         return location;
     }
-
+    /**
+     * returns the first integer in the list or -1 if empty
+     * @return first is the first integer in the list
+     */
+    public int first() {
+    	int first = -1;
+    	if(count > 0) {
+    		first = list[0];
+    	}
+    	return first;
+    }
+    /**
+     * returns the last integer in the list or -1 if empty
+     * @return last is the last integer in the list
+     */
+    public int last() {
+    	int last = -1;
+    	if(count > 0) {
+    		last = list[count-1];
+    	}
+    	return last;
+    }
 
 }
 
