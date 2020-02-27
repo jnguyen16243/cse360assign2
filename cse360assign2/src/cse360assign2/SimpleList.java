@@ -1,4 +1,5 @@
 package cse360assign2;
+import java.math.*;
 /**
  * 
  * NAME: JOSHEP NGUYEN
@@ -17,35 +18,63 @@ package cse360assign2;
 public class SimpleList {
     private int list[];
     private int count;
+    private int size;
     /**
-     * Constructor for SimpleList
+     * Default Constructor for SimpleList
      */
     public SimpleList() {
 		list = new int[10];
+		size = 10;
 		count = 0;
 	}
-    /**add adds an integer to the list
+    
+    /**add adds an integer to the beginning of the list
      * @param number is the number being added to the array
+     * if the list is full, the size of the array is increased 50%
      */
     public void add(int number){
-        if(count == 10){          //if list is full place integer in index 9
-            list[9] = number;
+        if(count == size){          //if list is full place integer in index 
+        	int copy[];
+        	copy = list;
+        	size = (int) Math.floor(size * 1.5);
+            list = new int[size];  //incrase size of array
+            for(int index = 1; index <= count; index++) {
+            	list[index] = copy[index-1];
+            }
+            list[0] = number;
+            count++;
         }else{
-            list[count] = number;
+        	
+        	for(int index = count-1; index >= 0; index--){
+        		list[index + 1] = list[index];
+        	}
+            list[0] = number;
             count++;
         }
     }
     /**
-     * Remove target integer from the list;
+     * Remove target integer from the list; if more than 25% of array is empty,
+     * size of array is decreased
      * @param target is the integer to be removed 
      */
     public void remove(int target){
-        for(int index = 0; index <= count; index++){ //find integer
+        for(int index = 0; index < count; index++){ //find integer
             if(target == list[index]){
-                for(int innerIndex = index; innerIndex <= count; innerIndex++){
+                for(int innerIndex = index; innerIndex < count-1; innerIndex++){
                     list[innerIndex] = list[innerIndex+1]; //remove integer
                 }
                 count--;
+                int emptySpaces = size - count;
+                int twentyFive = Math.floorDiv(size,4);
+                if(emptySpaces > twentyFive && size > 1) { //reduces size of array
+                	int copy[];
+                	copy = list;
+                	size = (int) Math.floor(size * .75);
+                	list = new int[size];
+                	for(int copyIndex =0; copyIndex < count; copyIndex++) {
+                		list[copyIndex] = copy[copyIndex];
+                	}
+                }
             }
         }
     }
@@ -57,15 +86,27 @@ public class SimpleList {
         return count;
     }
     /**
+     * size() returns the maximum size of the array as an int
+     * @return size as an int
+     */
+    public int size() {
+    	return size;
+    }
+    /**
      * toString method for SimpleList
      * @return output is a String of the array separated by spaces 
      */
     public String toString(){
         String output = "";
-        for(int index = 0; index < count-1; index++){
-            output += list[index] + " ";
+        if(count > 0) {
+        	for(int index = 0; index < count-1; index++){
+                output += list[index] + " ";
+            }
+            output  += list[count-1];
+        }else {
+        	output = "Array is empty";
         }
-        output  += list[count-1];
+        
         return output;
     }
     /**
